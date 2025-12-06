@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Models\category;
 use App\Models\Product;
 use App\Models\Review;
-use Illuminate\Support\Benchmark;
 use Illuminate\Support\Collection;
 
 class FaultyProductService
@@ -15,9 +14,9 @@ class FaultyProductService
         $products = Product::all();
            /*
             * Mistakes
-            * 1. Calling `all` method, which will cause a memory leak if the table is large.
+            * 1. Calling `all` method, which will cause a memory leak if the table is a large dataset.
             * 2. Not using eager loading or where clause.
-            * 3. Not using pagination.
+            * 3. Not using pagination or limit or cache the result.
             * */
 
         foreach ($products as $product) {
@@ -25,8 +24,8 @@ class FaultyProductService
             /*
              * Mistake
              *  1. Loading category by id instead of using relationship.
-             *  2. This will cause N+1 query problem.
-             *  3. Creating a new product attribute `category_name`
+             *  2. Accessing each model will cause an N+1 query problem.
+             *  3. Creating a new attribute `category_name` in the product model.
              * */
             $product->review_count = Review::where('product_id', $product->id)->count();
             /*
