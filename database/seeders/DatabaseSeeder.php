@@ -17,15 +17,15 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-//            EventTypeSeeder::class,
-//            PreferredChannelSeeder::class,
+            EventTypeSeeder::class,
+            PreferredChannelSeeder::class,
             ProductSeeder::class,
         ]);
 
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'haneef@example.com',
-//            'password' => bcrypt('password'),
-//        ]);
+        User::factory()->create([
+            'name' => 'Haneef User',
+            'email' => 'haneef@test.com',
+            'password' => bcrypt('password'),
+        ]);
     }
 }

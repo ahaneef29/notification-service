@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import EventTypeController from '@/actions/App/Http/Controllers/EventTypeController';
 import HeadingSmall from '@/components/HeadingSmall.vue';
+import { Button } from '@/components/ui/button';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
 import { edit } from '@/routes/appearance';
@@ -16,17 +17,22 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
 const props = defineProps<{
     eventTypes: object;
-    channelPivotId: number;
-    channelPivot: string;
+    preferredChannelUser: object;
+    channelName: string;
+    selectedEvenTypeIds: Array<number>;
 }>();
 
 const eventTypeForm = useForm({
-    channelPivotId: props.channelPivotId,
-    eventTypes: [],
+    preferredChannelUserId: props.preferredChannelUser?.id,
+    eventTypes: props.selectedEvenTypeIds ?? [],
 });
 
 const submit = () => {
-    eventTypeForm.submit(EventTypeController.update(props.channelPivotId));
+    eventTypeForm.submit(EventTypeController.update(), {
+        preserveScroll: true,
+        preserveState: true,
+        // onSuccess: () => alert('Updated'),
+    });
 };
 </script>
 
@@ -40,14 +46,9 @@ const submit = () => {
                     title="Event Type settings"
                     description="Update your account's Event Type settings"
                 />
-                <p>Channel: {{ channelPivot }}</p>
+                <p>Channel: {{ channelName }}</p>
                 <div>
-                    <form
-                        @submit.prevent="submit"
-                        class="space-y-6"
-                        v-if="eventTypes"
-                    >
-                        eventTypeForm: {{ eventTypeForm }}
+                    <form @submit.prevent="submit" class="space-y-6">
                         <ul
                             class="flex flex-col gap-2"
                             v-for="(eventType, index) in eventTypes"
@@ -63,6 +64,28 @@ const submit = () => {
                                 <h2>{{ eventType.name }}</h2>
                             </li>
                         </ul>
+                        <div class="flex items-center gap-4">
+                            <Button
+                                :disabled="eventTypeForm.processing"
+                                data-test="update-profile-button"
+                            >
+                                Save
+                            </Button>
+
+                            <Transition
+                                enter-active-class="transition ease-in-out"
+                                enter-from-class="opacity-0"
+                                leave-active-class="transition ease-in-out"
+                                leave-to-class="opacity-0"
+                            >
+                                <p
+                                    v-show="eventTypeForm.recentlySuccessful"
+                                    class="text-sm text-neutral-600"
+                                >
+                                    Saved.
+                                </p>
+                            </Transition>
+                        </div>
                     </form>
                 </div>
             </div>

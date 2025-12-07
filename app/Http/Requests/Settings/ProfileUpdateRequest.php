@@ -26,7 +26,7 @@ class ProfileUpdateRequest extends FormRequest
                 'max:255',
                 Rule::unique(User::class)->ignore($this->user()->id),
             ],
-            'channels' => 'required|array|min:1',
+            'preferredChannels' => 'required|array|min:1',
         ];
     }
 }

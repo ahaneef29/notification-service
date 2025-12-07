@@ -27,6 +27,7 @@ class ProfileController extends Controller
             'status' => $request->session()->get('status'),
             'eventTypes' => EventType::query()->get(),
             'channels' => PreferredChannel::query()->get(),
+            'selectedChannels' => ($request->user()->preferredChannelUsers()->with('preferredChannel')->get()),
         ]);
     }
 
@@ -35,26 +36,20 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
+        //dd($request->all());
         $request->user()->fill($request->validated());
 
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
 
-        $channels = collect($request->channels)->flatMap(function ($channel) use ($request) {
-            dump($channel);
-            if ($request->user()->preferredChannels()->where('preferred_channel_id', $channel)->doesntExist()) {
-                return [
-                    new PreferredChannelUser(['preferred_channel_id' => $channel])
-                ];
-            }
-            return [];
-        });
+        //dd($request->preferredChannels);
 
-        dd($channels);
+        $channels = collect($request->preferredChannels)->map(function ($channel) use ($request) {
+            return ['preferred_channel_id' => $channel];
+        })->toArray();
 
-
-        $request->user()->preferredChannels()->saveMany($channels);
+        $request->user()->preferredChannelUsers()->sync($channels);
 
         $request->user()->save();
 

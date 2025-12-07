@@ -2,7 +2,7 @@
 
 # Problem 2: Fix and Optimize This Code
 
- ### Benchmark comparison between the Faulty and Optimized product service
+ - Comparison between the two-product service
 
 | Report              | Faulty Products | Optimized Products  |
 |---------------------|-----------------|---------------------|

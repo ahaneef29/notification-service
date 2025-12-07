@@ -59,7 +59,7 @@ class User extends Authenticatable
         return $this->belongsToMany(EventType::class);
     }
 
-    public function preferredChannels(): HasMany
+    public function preferredChannelUsers(): HasMany
     {
         return $this->hasMany(PreferredChannelUser::class);
     }

@@ -11,8 +11,8 @@ return new class extends Migration {
     {
         Schema::create('preferred_channel_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->constrained();
-            $table->foreignIdFor(PreferredChannel::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(PreferredChannel::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

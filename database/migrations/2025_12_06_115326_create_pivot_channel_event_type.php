@@ -12,8 +12,8 @@ return new class extends Migration {
     {
         Schema::create('channel_event_type', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(PreferredChannelUser::class)->constrained();
-            $table->foreignIdFor(EventType::class)->constrained();
+            $table->foreignIdFor(PreferredChannelUser::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(EventType::class)->constrained()->cascadeOnDelete();
             $table->timestamps();
         });
     }

@@ -20,6 +20,7 @@ interface Props {
     status?: string;
     eventTypes?: [];
     channels?: [];
+    selectedChannels?: [];
 }
 
 defineProps<Props>();
@@ -37,8 +38,7 @@ const user = page.props.auth.user;
 const userForm = useForm({
     name: user.name,
     email: user.email,
-    event_types: [],
-    channels: user?.preferredChannels,
+    preferredChannels: user?.preferredChannels,
 });
 
 const submit = () => {
@@ -120,17 +120,17 @@ const submit = () => {
                         <div class="flex" v-for="channel in channels" :key="channel.id">
                             <input
                                 type="checkbox"
-                                v-model="userForm.channels"
+                                v-model="userForm.preferredChannels"
                                 class="mt-1 h-5 w-5 rounded border-gray-300 text-neutral-600 focus:ring-neutral-500"
                                 name="channel"
-                                :value="channel?.id"/>
+                                :value="channel.id"/>
                             <Label for="channel" class="px-2">
-                                {{ channel?.name }}
+                                {{ channel.name }}
                             </Label>
                         </div>
                         <InputError
                             class="mt-2"
-                            :message="userForm.errors.channels" />
+                            :message="userForm.errors.preferredChannels" />
                     </div>
 
                     <div class="flex items-center gap-4">
@@ -144,8 +144,7 @@ const submit = () => {
                             enter-active-class="transition ease-in-out"
                             enter-from-class="opacity-0"
                             leave-active-class="transition ease-in-out"
-                            leave-to-class="opacity-0"
-                        >
+                            leave-to-class="opacity-0">
                             <p
                                 v-show="userForm.recentlySuccessful"
                                 class="text-sm text-neutral-600"
@@ -158,19 +157,14 @@ const submit = () => {
             </div>
 
             <div class="border border-neutral-200 rounded-md p-4 mt-6">
-                <h3 class="font-bold">Preferred Channels</h3>
-<!--                <div class="flex flex-col gap-2" v-for="eventType in eventTypes" :key="eventType.id">-->
-<!--                    <Label for="eventTypes">-->
-<!--                        {{ eventType.name }}-->
-<!--                    </Label>-->
-<!--                </div>-->
+                <h3 class="font-bold">Choose the preferred channels to Receive Event Types</h3>
 
-                <div class="flex flex-col gap-2" v-for="channel in channels" :key="channel.id">
-                    <Link :href="EventTypeController.create(channel.id)" class="hover:underline p-2">
-                        {{ channel.name }}
-                    </Link>
+                    <div class="flex flex-col gap-2" v-for="selectedChannel in selectedChannels" :key="selectedChannel.id">
+                        <Link :href="EventTypeController.create(selectedChannel.preferred_channel.id)" class="hover:underline p-2 hover:font-bold">
+                            {{ selectedChannel.preferred_channel.name }}
+                        </Link>
+                    </div>
                 </div>
-            </div>
 
         </SettingsLayout>
     </AppLayout>

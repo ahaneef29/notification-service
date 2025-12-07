@@ -51,12 +51,13 @@ class HandleInertiaRequests extends Middleware
 
     protected function userData(Request $request): array
     {
-//        dd($request->user()->preferredChannels()->get());
+//        dd($request->user()?->preferredChannelUsers()?->pluck('preferred_channel_id')?->toArray());
+        //dd($request->user()?->preferredChannelUsers()->with('preferredChannel')->get());
         return [
             'id' => $request->user()->id,
             'name' => $request->user()->name,
             'email' => $request->user()->email,
-            'preferredChannels' => $request->user()?->preferredChannels?->pluck('id')?->toArray(),
+            'preferredChannels' => $request->user()?->preferredChannelUsers()?->pluck('preferred_channel_id')?->toArray(),
         ];
     }
 }

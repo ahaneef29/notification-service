@@ -14,8 +14,15 @@ class PreferredChannel extends Model
         'channel_name',
     ];
 
-    public function users(): HasMany
+    public function preferredChannelUsers(): HasMany
     {
         return $this->hasMany(PreferredChannelUser::class);
+    }
+
+    public function eventTypes(): BelongsToMany
+    {
+        return $this->belongsToMany(EventType::class, 'channel_event_type',
+            'event_type_id',
+            'preferred_channel_user_id');
     }
 }
