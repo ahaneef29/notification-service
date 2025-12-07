@@ -15,7 +15,7 @@ class EventTypeController extends Controller
         return inertia('settings/EventType/CreateOrUpdate', [
             'eventTypes' => EventType::query()->get(),
             'preferredChannelUser' => $preferredChannelUser,
-            'selectedEvenTypeIds' => $preferredChannelUser?->eventTypes()?->pluck('event_type_id')?->toArray() ?? [],
+            'selectedEventTypeIds' => $preferredChannelUser?->eventTypes()?->pluck('event_type_id')?->toArray() ?? [],
             'channelName' => $channel->name
         ]);
     }

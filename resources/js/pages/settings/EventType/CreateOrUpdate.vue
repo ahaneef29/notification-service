@@ -19,12 +19,12 @@ const props = defineProps<{
     eventTypes: object;
     preferredChannelUser: object;
     channelName: string;
-    selectedEvenTypeIds: Array<number>;
+    selectedEventTypeIds: Array<number>;
 }>();
 
 const eventTypeForm = useForm({
     preferredChannelUserId: props.preferredChannelUser?.id,
-    eventTypes: props.selectedEvenTypeIds ?? [],
+    eventTypes: props.selectedEventTypeIds ?? [],
 });
 
 const submit = () => {
