@@ -1,5 +1,3 @@
-# Problem 1:
-
 # Problem 2: Fix and Optimize This Code
 
 ### Benchmark comparison between the Faulty and Optimized product service
