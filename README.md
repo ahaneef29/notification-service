@@ -10,7 +10,8 @@
 
 ## Open the browser and go to http://notification-service.test
      Note: Im using Laravel 12, SQLite DB and as my dev environment is Herd.- 
-- Goto to login page and login with username:`haneef@test.com`  and password: `password`
+- Goto to login page and login with username:`haneef@test.com`  and password: `password` and 
+- Navigate to the user setting profile page update you can select the Channel you want to receive notifications.
 
 ### Installed packages
 I have installed Laravel `Debugbar`, `Laravel Telescope` and `korridor/laravel-has-many-sync`.
