@@ -1,1 +1,1 @@
-Mail Message
+Order Placed Mail Message

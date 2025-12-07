@@ -2,14 +2,18 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderPlaced;
+
+use App\Events\OrderShipped;
+use App\Events\PaymentFailed;
 use App\Models\NotificationHistory;
 use App\Notifications\OrderPlacedNotification;
+use App\Notifications\OrderShippedNotification;
+use App\Notifications\PaymentFailedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-class SendOrderPlacedNotification
+class SendPaymentFailedNotification
 {
     /**
      * Create the event listener.
@@ -22,14 +26,14 @@ class SendOrderPlacedNotification
     /**
      * Handle the event.
      */
-    public function handle(OrderPlaced $event): void
+    public function handle(PaymentFailed $event): void
     {
-        Log::info('Order placed:'.$event->user->name);
+        Log::info('Payment Failed:'.$event->user->name);
 
         NotificationHistory::query()->create([
-            'message' => 'Order placed successfully'
+            'message' => 'Payment failed'
         ]);
 
-        $event->user?->notify(new OrderPlacedNotification());
+        $event->user?->notify(new PaymentFailedNotification());
     }
 }

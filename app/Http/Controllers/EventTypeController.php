@@ -11,11 +11,11 @@ class EventTypeController extends Controller
 {
     public function create(PreferredChannel $channel)
     {
-        $preferredChannelUser = $channel->preferredChannelUsers()->first()->load('eventTypes');
+        $preferredChannelUser = $channel->preferredChannelUsers()?->first()?->load('eventTypes') ?? [];
         return inertia('settings/EventType/CreateOrUpdate', [
             'eventTypes' => EventType::query()->get(),
             'preferredChannelUser' => $preferredChannelUser,
-            'selectedEvenTypeIds' => $preferredChannelUser->eventTypes()->pluck('event_type_id')?->toArray(),
+            'selectedEvenTypeIds' => $preferredChannelUser?->eventTypes()?->pluck('event_type_id')?->toArray() ?? [],
             'channelName' => $channel->name
         ]);
     }
@@ -23,7 +23,7 @@ class EventTypeController extends Controller
     public function update(Request $request)
     {
         $preferredChannelUser = PreferredChannelUser::where('preferred_channel_users.id', $request->preferredChannelUserId)->first();
-        $preferredChannelUser->eventTypes()->sync($request->eventTypes);
+        $preferredChannelUser->eventTypes()->syncWithoutDetaching($request->eventTypes);
         return to_route('event-type.create', [$preferredChannelUser->preferredChannel->id]);
     }
 

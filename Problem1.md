@@ -1,43 +1,13 @@
-# Problem 1:
+# The Real Challenge
+### 1. Extensibility: How would you add a third channel (like WhatsApp or Push notifications) without rewriting existing code?
+- Current implementation channels are the user-preferred channels, If we want to add a third channel, Dynamically we need to add a new channel in the PreferredChannels Model and can be used in `via` method. But if we want to add a custom channel means we need to update code. 
 
-# Problem 2: Fix and Optimize This Code
+### 2. Resilience: What happens when the SMS provider is down but email service is working? How would you implement a fallback to a different SMS provider?
+- SMS service are configurable, which means we can change the SMS provider in the config dynamically. 
+- We can also add a fallback channel by implementing a factory pattern.
 
- - Comparison between the two-product service
+###  3. Scale: The business expects to send 50,000 notifications per hour during peak times. What parts of your design would break first? How would you address this?
+- I can expect the most queue jobs will be failed, so we can add a retry mechanism in the queue job.
 
-| Report              | Faulty Products | Optimized Products  |
-|---------------------|-----------------|---------------------|
-| Query Count         | 301             | 6 (cached 1)        |
-| Execution Time (MS) | 60.79           | 35.85 (cached 1.32) |
-| Memory Usage (MB)   | 2               | 2  (cached N/A)     |
-
-# Faulty Products Service
- - Loading all products into memory using `all()` method.
- - Not using eager loading. E.g.: `with()`
- - Not caching
- - Not using pagination
- - Not using `where()` clause method optimization
- - Not using `pagination()` method
- - Loading category model by `id` instead of using relationship.
- - Accessing each model will cause an N+1 query problem.
- - Creating a new attribute `category_name, review_count, avg_rating` in the product model.
-
-# Optimized Products Service
- - Using eager loading. E.g.: `with()`
- - Caching the results for 5 seconds (Demo purpose only)
- - Using pagination
- - Using `where()` clause method optimization
- - Using `get()` method instead of `all()` method.
- - Using `transform()` method to create a new attribute array `category_name, review_count, avg_rating`
- - Loading category model by relationship.
- - Avoiding N+1 query problem.
- - OVERALL: Caching the results and optimizing the query will improve the performance and seamless access to the API and also enhance the user experience.
-
-## Extension Questions
- 1. How would you add pagination (25 products per page)? 
-    -  To add pagination to model, we can use `paginate()` or `simplePaginate` method, which will return an object and also in `pagination()` method which will accepts a `per_page` number we can pass in query parameter or directly set `pagination(25)`.
- 2. How would you add filtering by category?
-    -  To filter by category, we can use `where('category_id', '=', 1)` method in a model, passing category id.
- 3. How would you add sorting by price or rating?
-    -  To sort by price or rating, we can use `orderBy('price', 'asc')` or `orderBy('rating', 'desc')` method in a model.
- 4. What would you do differently for 100,000 products?
-    -  To optimize the query for 100,000 products, we can use `chunk()` method in a model.
+### 4. Idempotency: How do you prevent sending duplicate notifications if the same event is triggered twice?
+- All Queue Jobs should be implemented `ShouldBeUnique`. So a job won't be duplicated.

@@ -2,14 +2,16 @@
 
 namespace App\Listeners;
 
-use App\Events\OrderPlaced;
+
+use App\Events\OrderShipped;
 use App\Models\NotificationHistory;
 use App\Notifications\OrderPlacedNotification;
+use App\Notifications\OrderShippedNotification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Log;
 
-class SendOrderPlacedNotification
+class SendOrderShippedNotification
 {
     /**
      * Create the event listener.
@@ -22,14 +24,14 @@ class SendOrderPlacedNotification
     /**
      * Handle the event.
      */
-    public function handle(OrderPlaced $event): void
+    public function handle(OrderShipped $event): void
     {
-        Log::info('Order placed:'.$event->user->name);
+        Log::info('Order Shipped:'.$event->user->name);
 
         NotificationHistory::query()->create([
-            'message' => 'Order placed successfully'
+            'message' => 'Order shipped successfully'
         ]);
 
-        $event->user?->notify(new OrderPlacedNotification());
+        $event->user?->notify(new OrderShippedNotification());
     }
 }
