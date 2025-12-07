@@ -20,7 +20,7 @@ class OptimizedProductService
             ->with(['category', 'reviews']) // `with` method will eager load the relationship
             ->withCount('reviews') // Sub select a query with a count.
             ->withAvg('reviews', 'rating')
-                ->paginate()
+                ->get() // Get the result
                 ->transform(function (Product $product) {  // Using a higher order function to transform the result
                     return [
                         'id' => $product->id,

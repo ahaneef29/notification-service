@@ -13,7 +13,7 @@ class PreferredChannelSeeder extends Seeder
             ->insert([
                 [
                     'name' => 'Email',
-                    'channel_name' => 'email',
+                    'channel_name' => 'mail',
                 ],
                 [
                     'name' => 'SMS',
